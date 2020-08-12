@@ -1,0 +1,20 @@
+image: gradle:4.10.3-alpine
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Xmx3G"
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+build:
+  stage: build
+  script: gradle build
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
+  artifacts:
+    paths:
+      - build/libs
